@@ -1,0 +1,145 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Board Games";
+}
+
+<h1>Board Game Search</h1>
+
+<form method="post">
+    <div class="form-row">
+        <div class="col-md-4">
+            <input type="checkbox" asp-for="SearchByGameType" />
+            <label asp-for="SearchByGameType"></label>
+
+            <select class="form-control @(Model.SearchByGameType ? "" : "d-none")" asp-for="SelectedGameType" asp-items="Html.GetEnumSelectList<GameType>()"></select>
+        </div>
+        <div class="col-md-4">
+            <input type="checkbox" asp-for="SearchByMinAge" />
+            <label asp-for="SearchByMinAge"></label>
+
+            <select class="form-control @(Model.SearchByMinAge ? "" : "d-none")" asp-for="SelectedMinAge">
+                <option value="3">3+</option>
+                <option value="8">8+</option>
+                <option value="10">10+</option>
+                <option value="12">12+</option>
+                <option value="17">17+</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="checkbox" asp-for="SearchByPlayTime" />
+            <label asp-for="SearchByPlayTime"></label>
+
+            <select class="form-control @(Model.SearchByPlayTime ? "" : "d-none")" asp-for="SelectedPlayTime">
+                <option value="15">15+ minutes</option>
+                <option value="30">30+ minutes</option>
+                <option value="45">45+ minutes</option>
+                <option value="60">60+ minutes</option>
+                <option value="90">90+ minutes</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <input type="checkbox" asp-for="SearchByMaxPlayers" />
+            <label asp-for="SearchByMaxPlayers"></label>
+
+            <select class="form-control @(Model.SearchByMaxPlayers ? "" : "d-none")" asp-for="SelectedMaxPlayers">
+                <option value="2">2 players</option>
+                <option value="4">4 players</option>
+                <option value="8">8 players</option>
+                <option value="18">18 players</option>
+                <option value="30">30 players</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <input type="checkbox" asp-for="SearchByPlayType" />
+            <label asp-for="SearchByPlayType"></label>
+
+            <select class="form-control @(Model.SearchByPlayType ? "" : "d-none")" asp-for="SelectedPlayType" asp-items="Html.GetEnumSelectList<PlayType>()"></select>
+        </div>
+    </div>
+    <div class="form-row">
+        <button type="submit" class="btn btn-primary btn-block align-middle">Search</button>
+    </div>
+</form>
+
+@if(Model.Results.Any())
+{
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Year Published</th>
+                <th>Max Players</th>
+                <th>Suggested Age</th>
+                <th>Game Type</th>
+                <th>Play Type</th>
+                <th>Avg Game Time (Min)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.Results)
+            {
+                <tr>
+                    <td>@result.Name</td>
+                    <td>@result.MaxPlayers</td>
+                    <td>@result.SuggestedMinimumAge</td>
+                    <td>@result.GameType</td>
+                    <td>@result.PlayType</td>
+                    <td>@result.AverageGameTimeMinutes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#SearchByGameType").change(function () {
+            if ($("#SearchByGameType").prop("checked")) {
+                $("#SelectedGameType").removeClass("d-none");
+            }
+            else {
+                $("#SelectedGameType").addClass("d-none");
+            }
+        });
+
+        $("#SearchByMinAge").change(function () {
+            if ($("#SearchByMinAge").prop("checked")) {
+                $("#SelectedMinAge").removeClass("d-none");
+            }
+            else {
+                $("#SelectedMinAge").addClass("d-none");
+            }
+        });
+
+        $("#SearchByPlayTime").change(function () {
+            if ($("#SearchByPlayTime").prop("checked")) {
+                $("#SelectedPlayTime").removeClass("d-none");
+            }
+            else {
+                $("#SelectedPlayTime").addClass("d-none");
+            }
+        });
+
+        $("#SearchByMaxPlayers").change(function () {
+            if ($("#SearchByMaxPlayers").prop("checked")) {
+                $("#SelectedMaxPlayers").removeClass("d-none");
+            }
+            else {
+                $("#SelectedMaxPlayers").addClass("d-none");
+            }
+        });
+
+        $("#SearchByPlayType").change(function () {
+            if ($("#SearchByPlayType").prop("checked")) {
+                $("#SelectedPlayType").removeClass("d-none");
+            }
+            else {
+                $("#SelectedPlayType").addClass("d-none");
+            }
+        });
+    </script>
+}
